@@ -62,10 +62,10 @@ def cut_img(img_path_list, save_path, stride):
                 np.save(f'{save_path}{img_size}/{num}.npy', piece)
                 num+=1
 
-cut_img(train_input_files, 'C:/LG_CAMERA/train_input_img_', 128)
-cut_img(train_label_files, 'C:/LG_CAMERA/train_label_img_', 128)
-cut_img(val_input_files, 'C:/LG_CAMERA/val_input_img_', 128)
-cut_img(val_label_files, 'C:/LG_CAMERA/val_label_img_', 128)
+#cut_img(train_input_files, 'C:/LG_CAMERA/train_input_img_', 128)
+#cut_img(train_label_files, 'C:/LG_CAMERA/train_label_img_', 128)
+#cut_img(val_input_files, 'C:/LG_CAMERA/val_input_img_', 128)
+#cut_img(val_label_files, 'C:/LG_CAMERA/val_label_img_', 128)
 
 train_inp_files = glob(f'C:/LG_CAMERA/train_input_img_{img_size}/*.npy')
 train_targ_files = glob(f'C:/LG_CAMERA/train_label_img_{img_size}/*.npy')
@@ -211,7 +211,7 @@ def ResUNet101V2(input_shape=(None, None, 3), dropout_rate=0.1, start_neurons = 
 
 optimizer = tf.keras.optimizers.Adam(learning_rate)
 model = ResUNet101V2(input_shape=(img_size, img_size, 3),dropout_rate=dropout_rate)
-model.compile(loss='mae', optimizer=optimizer)
+# model.compile(loss='mae', optimizer=optimizer)
 
 callbacks_list = [
     tf.keras.callbacks.ModelCheckpoint(
@@ -221,13 +221,13 @@ callbacks_list = [
     )
 ]
 
-hist = model.fit(train_dataset, epochs=EPOCHS, validation_data=val_dataset, callbacks=callbacks_list)
+# hist = model.fit(train_dataset, epochs=EPOCHS, validation_data=val_dataset, callbacks=callbacks_list)
 
-plt.plot(hist.history["loss"], label='train_loss')
-plt.plot(hist.history["val_loss"], label='val_loss')
-plt.title('loss_plot')
-plt.legend()
-plt.show()
+# plt.plot(hist.history["loss"], label='train_loss')
+# plt.plot(hist.history["val_loss"], label='val_loss')
+# plt.title('loss_plot')
+# plt.legend()
+# plt.show()
 
 model = tf.keras.models.load_model('C:/LG_CAMERA/h5/baseline_model.h5')
 
@@ -297,7 +297,7 @@ for i, (input_path, label_path) in enumerate(zip(val_input_files[:5], val_label_
     plt.subplot(1,3,3)
     plt.imshow(targ_img)
     plt.title('target_img', fontsize=10)
-    plt.show()
+    #plt.show()
     print('input PSNR :', psnr_score(input_img.astype(float), targ_img.astype(float), 255))
     print('output PSNR :', psnr_score(result[i].astype(float), targ_img.astype(float), 255), '\n')
 
@@ -321,8 +321,8 @@ for i, (input_path, label_path) in enumerate(zip(val_input_files[:5], val_label_
         plt.show()
 
 def make_submission(result):
-    os.makedirs('submission', exist_ok=True)
-    os.chdir("./submission/")
+    # os.makedirs('submission', exist_ok=True)
+    os.chdir("C:/LG_CAMERA/submission/")
     sub_imgs = []
     for i, img in enumerate(result):
         path = f'test_{20000+i}.png'
